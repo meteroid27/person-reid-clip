@@ -1,10 +1,8 @@
 ﻿# Person-Based Video Segmentation and ReID using CLIP
 
-
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange?logo=pytorch)](https://pytorch.org)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit-red?logo=streamlit)](https://streamlit.io)
-[![CLIP](https://img.shields.io/badge/Model-IRRA%20CLIP-green)](https://arxiv.org/abs/2303.12501)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -13,17 +11,33 @@
 
 This project implements a **multimodal person re-identification (ReID) system** capable of locating and tracking a specific individual across one or more surveillance videos using:
 
-- A **query image** (image-based search)
-- A **natural language description** (text-based search)
-- **Both combined** (hybrid fusion for maximum robustness)
+- **Query Image:** Image-based search using CLIP-ReID (Prompt Learning).
+- **Query Text:** Natural language description search using the IRRA framework.
+- **Hybrid Query:** Both combined (hybrid fusion) for maximum robustness.
 
-The system is powered by **CLIP**. The text-query components are fine-tuned using the **IRRA** framework on the **CUHK-PEDES** person description dataset. The image-query components utilize **prompt learning** and are trained on the **Market-1501** dataset. These are integrated with **YOLOv8** detection and **DeepSORT** tracking, and deployed as an interactive **Streamlit web application**.
+The system is powered by **CLIP**. The text-query pipeline is fine-tuned using the **IRRA** framework on the **CUHK-PEDES** dataset. The image-query pipeline utilizes **prompt learning** based on **CLIP-ReID** and is trained on the **Market-1501** dataset. These are integrated with **YOLOv8** detection and **DeepSORT** tracking, and deployed as an interactive **Streamlit web application**.
+
+---
+
+## Model Training & Testing Details
+
+Our system utilizes two specialized pipelines for text and image queries, both fine-tuned from OpenAI's foundational CLIP model.
+
+### 1. Text-Only Model (IRRA)
+- **Framework:** IRRA (Cross-Modal Implicit Relation Reasoning and Aligning).
+- **Dataset:** Trained and tested on **CUHK-PEDES** (Person Search with Natural Language Description).
+- **Methodology:** The text pipeline fine-tunes the CLIP text encoder. It uses Implicit Relation Reasoning and Similarity Distribution Matching (SDM) loss along with Masked Language Modeling (MLM) to deeply align textual attribute descriptions with visual embeddings. 
+
+### 2. Image-Only Model (CLIP-ReID)
+- **Framework:** CLIP-ReID (Prompt Learning).
+- **Dataset:** Trained and tested on the **Market-1501** dataset.
+- **Methodology:** Instead of fully fine-tuning the entire visual backbone (which can destroy CLIP's rich pre-trained representations), this pipeline freezes the core visual encoder and utilizes **Prompt Learning**. Learnable text prompts and domain-specific adapters are trained to project Market-1501 visual features into a highly discriminative ReID embedding space.
 
 ---
 
 ## System Architecture
 
-```	ext
+\\\	ext
 Input Video(s)  +  Query (Image / Text / Both)
         |
         V
@@ -57,7 +71,7 @@ Input Video(s)  +  Query (Image / Text / Both)
 | Annotated Video | |  Cropped Target |
 | (full + bbox)   | |  (person only)  |
 +-----------------+ +-----------------+
-```
+\\\
 
 ---
 
@@ -70,14 +84,14 @@ Input Video(s)  +  Query (Image / Text / Both)
 | **Hybrid Query** | Fuse image + text with tunable alpha weight for best accuracy |
 | **Multi-Video** | Search across multiple videos simultaneously with one query |
 | **Dual Output** | Annotated full-frame video + cropped target-only video |
-| **In-App Playback** | Watch output directly in the browser â€” no download needed |
+| **In-App Playback** | Watch output directly in the browser |
 | **Occlusion Handling** | Track survives up to 7 seconds of occlusion without ID switch |
 
 ---
 
 ## Project Structure
 
-```	ext
+\\\	ext
 person-reid-clip/
 |
 +-- app.py                      # Streamlit web application
@@ -98,130 +112,32 @@ person-reid-clip/
 +-- requirements.txt
 +-- LICENSE
 +-- README.md
-```
+\\\
 
 > **Model weights are not included in this repository due to file size.**  
-> Download all model files from the [**GitHub Releases**](https://github.com/meteroid27/person-reid-clip/releases/tag/v1.0) page and place them as shown below:
->
-> ```
-> clip_models/
-> â”œâ”€â”€ best_model_image.pth    â† download from Releases
-> â””â”€â”€ best_model_text.pth     â† download from Releases
->
-> models_path/
-> â””â”€â”€ yolo_finetuned_best.pt  â† download from Releases
-> ```
+> Download all model files from the [**GitHub Releases**](https://github.com/meteroid27/person-reid-clip/releases/tag/v1.0) page and place them in \clip_models/\ and \models_path/\ as shown above.
 
 ---
 
-## Installation
+## References
 
-### Requirements
-- Python 3.10+
-- CUDA GPU (recommended) or CPU
+1. **CLIP** — Radford, A., et al. (2021). *Learning Transferable Visual Models From Natural Language Supervision.* ICML 2021.
+   [[OpenAI CLIP Repository]](https://github.com/openai/CLIP)
 
-### Steps
+2. **IRRA (Text Query Pipeline)** — Jiang, Z., & Ye, M. (2023). *Cross-Modal Implicit Relation Reasoning and Aligning for Text-to-Image Person Retrieval.* CVPR 2023.
+   [[Paper]](https://arxiv.org/abs/2303.12501) | [[Code]](https://github.com/anosorae/IRRA)
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/meteroid27/person-reid-clip.git
-cd person-reid-clip
+3. **CLIP-ReID (Image Query Pipeline)** — Li, S., et al. (2023). *CLIP-Driven Fine-grained Text-Image Person Re-identification.* IEEE Transactions on Image Processing.
+   [[Paper]](https://arxiv.org/abs/2211.13977) | [[Code]](https://github.com/Syliz517/CLIP-ReID)
 
-# 2. Install dependencies
-pip install -r requirements.txt
+4. **CUHK-PEDES Dataset** — Li, S., et al. (2017). *Person Search with Natural Language Description.* CVPR 2017.
+   [[Dataset Repository]](https://github.com/ShuangLI59/Person-Search-with-Natural-Language-Description)
 
-# 3. Place model weights
-#    clip_models/best_model_image.pth
-#    clip_models/best_model_text.pth
-#    models_path/yolo_finetuned_best.pt
-
-# 4. Launch the app
-streamlit run app.py
-```
-
-Open your browser at `http://localhost:8501`
-
----
-
-## Usage
-
-### Image Mode
-1. Select **Image** as the CLIP query mode in the sidebar
-2. Upload one or more input videos
-3. Upload a clear photo of the target person
-4. Click **â–¶ Run ReID Pipeline**
-
-### Text Mode
-1. Select **Text** as the CLIP query mode
-2. Upload videos
-3. Enter a description: *"A person wearing a blue shirt and dark jeans"*
-4. Click **â–¶ Run ReID Pipeline**
-
-### Hybrid Mode *(recommended â€” best results)*
-1. Select **Both** as the CLIP query mode
-2. Upload videos + query image + text description
-3. Adjust the **alpha** slider (`1.0` = image only, `0.0` = text only, `0.5` = equal)
-4. Click **â–¶ Run ReID Pipeline**
-
-### Multi-Video Search
-Upload multiple videos in the sidebar. The pipeline processes all of them in sequence with the same query, producing separate outputs for each video.
-
----
-
-## Training
-
-The CLIP models are fine-tuned using the **IRRA** framework on the **CUHK-PEDES** dataset.
-
-```bash
-# Fine-tune text model (SDM + MLM losses)
-python clip_training/clip_train_text.py
-
-# Fine-tune image model
-python clip_training/clip_train_image.py
-```
-
-**Hyperparameters (following IRRA CVPR 2023):**
-
-| Parameter | Value |
-|---|---|
-| Base model | `openai/clip-vit-base-patch16` |
-| Dataset | CUHK-PEDES (40,206 images, 13,003 persons) |
-| Optimizer | AdamW |
-| Learning rate | 1e-5 |
-| Weight decay | 4e-4 |
-| Epochs | 60 |
-| Warmup | 5 epochs |
-| Batch size | 64 |
-| Losses | SDM + MLM (text) / InfoNCE (image) |
-
----
-
-## Configuration
-
-Key tuning parameters in `reid_main.py`:
-
-| Constant | Default | Effect |
-|---|---|---|
-| `CLIP_SIM_THRESHOLD` | `0.20` | Minimum track score to be accepted |
-| `CLIP_RELATIVE_SCORE_MARGIN` | `0.10` | Margin to include re-identified track fragments |
-| `CLIP_IMAGE_ABS_FRAME_THRESHOLD` | `0.15` | Per-frame floor for image/hybrid mode |
-| `CLIP_TEXT_ABS_FRAME_THRESHOLD` | `0.138` | Per-frame floor for text mode |
-| `DETECTION_CONFIDENCE` | `0.30` | YOLO confidence (lower = detects smaller persons) |
-
----
-
-
-
-## Author
-
-**Pukar Timalsina**  
-Final Year â€” B.E. Electronics and Computer Engineering  
-Tribhuvan University, Institute of Engineering
+5. **Market-1501 Dataset** — Zheng, L., et al. (2015). *Scalable Person Re-identification: A Benchmark.* ICCV 2015.
+   [[Dataset Information]](https://zheng-zhe.com/market1501.html)
 
 ---
 
 ## License
 
-MIT License â€” see [LICENSE](LICENSE) for details.
-
-
+MIT License — see [LICENSE](LICENSE) for details.
