@@ -16,8 +16,8 @@ env/
 ENV/
 
 # Model weights (too large for GitHub — use Releases or HuggingFace Hub)
-clip_models/
-models_path/
+clip_models/*
+models_path/*
 deep-person-reid/
 
 # Pipeline outputs and temp files
@@ -44,3 +44,6 @@ Thumbs.db
 
 .lightning_studio/
 .streamlit/
+
+!clip_models/.gitkeep
+!models_path/.gitkeep
