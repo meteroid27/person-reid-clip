@@ -1,4 +1,4 @@
-# Person-Based Video Segmentation and ReID using CLIP
+﻿# Person-Based Video Segmentation and ReID using CLIP
 
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
@@ -25,40 +25,40 @@ The system is powered by **CLIP**. The text-query components are fine-tuned usin
 
 ```
 Input Video(s)  +  Query (Image / Text / Both)
-        │
-        ▼
-┌─────────────────┐
-│   YOLOv8        │  ←  Fine-tuned person detector
-│   (Detection)   │
-└────────┬────────┘
-         │  Bounding boxes per frame
-         ▼
-┌─────────────────┐
-│   DeepSORT      │  ←  Multi-object tracker
-│   (Tracking)    │      assigns consistent track IDs
-└────────┬────────┘
-         │  Per-person crops (track segments)
-         ▼
-┌──────────────────────────────────────────┐
-│                                          │
-│                                          │
-│  Query Image ──► Image Encoder ──► feat  │
-│  Query Text  ──► Text Encoder  ──► feat  │
-│                                          │
-│  Hybrid:  feat = α·img + (1-α)·text      │
-└───────────────────┬──────────────────────┘
-                    │  Cosine similarity vs all tracks
-                    ▼
-┌─────────────────┐
-│  Track Scoring  │  ←  Top-50% avg similarity
-│  & Selection    │      + per-frame quality filter
-└────────┬────────┘
-         │
-         ▼
-┌────────────────────┐   ┌───────────────────────┐
-│  Annotated Video   │   │  Cropped Target Video  │
-│  (full frame+bbox) │   │  (target person only)  │
-└────────────────────┘   └───────────────────────┘
+        â”‚
+        â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   YOLOv8        â”‚  â†  Fine-tuned person detector
+â”‚   (Detection)   â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+         â”‚  Bounding boxes per frame
+         â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   DeepSORT      â”‚  â†  Multi-object tracker
+â”‚   (Tracking)    â”‚      assigns consistent track IDs
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+         â”‚  Per-person crops (track segments)
+         â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                                          â”‚
+â”‚                                          â”‚
+â”‚  Query Image â”€â”€â–º Image Encoder â”€â”€â–º feat  â”‚
+â”‚  Query Text  â”€â”€â–º Text Encoder  â”€â”€â–º feat  â”‚
+â”‚                                          â”‚
+â”‚  Hybrid:  feat = Î±Â·img + (1-Î±)Â·text      â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    â”‚  Cosine similarity vs all tracks
+                    â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Track Scoring  â”‚  â†  Top-50% avg similarity
+â”‚  & Selection    â”‚      + per-frame quality filter
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+         â”‚
+         â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Annotated Video   â”‚   â”‚  Cropped Target Video  â”‚
+â”‚  (full frame+bbox) â”‚   â”‚  (target person only)  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
@@ -72,7 +72,7 @@ Input Video(s)  +  Query (Image / Text / Both)
 | **Hybrid Query** | Fuse image + text with tunable alpha weight for best accuracy |
 | **Multi-Video** | Search across multiple videos simultaneously with one query |
 | **Dual Output** | Annotated full-frame video + cropped target-only video |
-| **In-App Playback** | Watch output directly in the browser — no download needed |
+| **In-App Playback** | Watch output directly in the browser â€” no download needed |
 | **Occlusion Handling** | Track survives up to 7 seconds of occlusion without ID switch |
 
 ---
@@ -81,25 +81,25 @@ Input Video(s)  +  Query (Image / Text / Both)
 
 ```
 person-reid-clip/
-│
-├── app.py                      # Streamlit web application
-├── reid_main.py                # Core ReID pipeline
-├── clip_inference.py           # CLIP model architecture & inference
-│
-├── clip_training/              # Model training scripts
-│   ├── clip_train_image.py     # Image-mode fine-tuning (IRRA)
-│   └── clip_train_text.py      # Text-mode fine-tuning (IRRA + SDM + MLM)
-│
-├── clip_models/                # [NOT included] Fine-tuned CLIP weights
-│   ├── best_model_image.pth    #   → image encoder checkpoint
-│   └── best_model_text.pth     #   → text encoder checkpoint
-│
-├── models_path/                # [NOT included] YOLO weights
-│   └── yolo_finetuned_best.pt
-│
-├── requirements.txt
-├── LICENSE
-└── README.md
+â”‚
+â”œâ”€â”€ app.py                      # Streamlit web application
+â”œâ”€â”€ reid_main.py                # Core ReID pipeline
+â”œâ”€â”€ clip_inference.py           # CLIP model architecture & inference
+â”‚
+â”œâ”€â”€ clip_training/              # Model training scripts
+â”‚   â”œâ”€â”€ clip_train_image.py     # Image-mode fine-tuning (IRRA)
+â”‚   â””â”€â”€ clip_train_text.py      # Text-mode fine-tuning (IRRA + SDM + MLM)
+â”‚
+â”œâ”€â”€ clip_models/                # [NOT included] Fine-tuned CLIP weights
+â”‚   â”œâ”€â”€ best_model_image.pth    #   â†’ image encoder checkpoint
+â”‚   â””â”€â”€ best_model_text.pth     #   â†’ text encoder checkpoint
+â”‚
+â”œâ”€â”€ models_path/                # [NOT included] YOLO weights
+â”‚   â””â”€â”€ yolo_finetuned_best.pt
+â”‚
+â”œâ”€â”€ requirements.txt
+â”œâ”€â”€ LICENSE
+â””â”€â”€ README.md
 ```
 
 > **Model weights are not included in this repository due to file size.**  
@@ -107,11 +107,11 @@ person-reid-clip/
 >
 > ```
 > clip_models/
-> ├── best_model_image.pth    ← download from Releases
-> └── best_model_text.pth     ← download from Releases
+> â”œâ”€â”€ best_model_image.pth    â† download from Releases
+> â””â”€â”€ best_model_text.pth     â† download from Releases
 >
 > models_path/
-> └── yolo_finetuned_best.pt  ← download from Releases
+> â””â”€â”€ yolo_finetuned_best.pt  â† download from Releases
 > ```
 
 ---
@@ -151,19 +151,19 @@ Open your browser at `http://localhost:8501`
 1. Select **Image** as the CLIP query mode in the sidebar
 2. Upload one or more input videos
 3. Upload a clear photo of the target person
-4. Click **▶ Run ReID Pipeline**
+4. Click **â–¶ Run ReID Pipeline**
 
 ### Text Mode
 1. Select **Text** as the CLIP query mode
 2. Upload videos
 3. Enter a description: *"A person wearing a blue shirt and dark jeans"*
-4. Click **▶ Run ReID Pipeline**
+4. Click **â–¶ Run ReID Pipeline**
 
-### Hybrid Mode *(recommended — best results)*
+### Hybrid Mode *(recommended â€” best results)*
 1. Select **Both** as the CLIP query mode
 2. Upload videos + query image + text description
 3. Adjust the **alpha** slider (`1.0` = image only, `0.0` = text only, `0.5` = equal)
-4. Click **▶ Run ReID Pipeline**
+4. Click **â–¶ Run ReID Pipeline**
 
 ### Multi-Video Search
 Upload multiple videos in the sidebar. The pipeline processes all of them in sequence with the same query, producing separate outputs for each video.
@@ -212,28 +212,18 @@ Key tuning parameters in `reid_main.py`:
 
 ---
 
-## References
 
-1. **CLIP** � Radford, A. et al. (2021).
-   [[OpenAI CLIP Repository]](https://github.com/openai/CLIP) | [[HuggingFace Models]](https://huggingface.co/models?search=clip)
-
-2. **CUHK-PEDES Dataset**
-   [[Dataset Repository]](https://github.com/ShuangLI59/Person-Search-with-Natural-Language-Description)
-
-3. **Market-1501 Dataset**
-   [[Dataset Information]](https://zheng-zhe.com/market1501.html)
-
----
 
 ## Author
 
 **Pukar Timalsina**  
-Final Year — B.E. Electronics and Computer Engineering  
+Final Year â€” B.E. Electronics and Computer Engineering  
 Tribhuvan University, Institute of Engineering
 
 ---
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License â€” see [LICENSE](LICENSE) for details.
+
 
