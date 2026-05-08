@@ -23,42 +23,40 @@ The system is powered by **CLIP**. The text-query components are fine-tuned usin
 
 ## System Architecture
 
-```
+```	ext
 Input Video(s)  +  Query (Image / Text / Both)
-        â”‚
-        â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚   YOLOv8        â”‚  â†  Fine-tuned person detector
-â”‚   (Detection)   â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-         â”‚  Bounding boxes per frame
-         â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚   DeepSORT      â”‚  â†  Multi-object tracker
-â”‚   (Tracking)    â”‚      assigns consistent track IDs
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-         â”‚  Per-person crops (track segments)
-         â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                                          â”‚
-â”‚                                          â”‚
-â”‚  Query Image â”€â”€â–º Image Encoder â”€â”€â–º feat  â”‚
-â”‚  Query Text  â”€â”€â–º Text Encoder  â”€â”€â–º feat  â”‚
-â”‚                                          â”‚
-â”‚  Hybrid:  feat = Î±Â·img + (1-Î±)Â·text      â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                    â”‚  Cosine similarity vs all tracks
-                    â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  Track Scoring  â”‚  â†  Top-50% avg similarity
-â”‚  & Selection    â”‚      + per-frame quality filter
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-         â”‚
-         â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  Annotated Video   â”‚   â”‚  Cropped Target Video  â”‚
-â”‚  (full frame+bbox) â”‚   â”‚  (target person only)  â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+        |
+        V
++-----------------+
+|   YOLOv8        |  <-  Fine-tuned person detector
+|   (Detection)   |
++--------+--------+
+         |  Bounding boxes per frame
+         V
++-----------------+
+|   DeepSORT      |  <-  Multi-object tracker
+|   (Tracking)    |      assigns consistent track IDs
++--------+--------+
+         |  Per-person crops (track segments)
+         V
++------------------------------------------+
+|                                          |
+|  Query Image --> Image Encoder --> feat  |
+|  Query Text  --> Text Encoder  --> feat  |
+|                                          |
+|  Hybrid:  feat = a.img + (1-a).text      |
++------------------+-----------------------+
+                   |  Cosine similarity vs all tracks
+                   V
+          +-----------------+
+          |  Track Scoring  |
+          +--------+--------+
+         +---------+---------+
+         V                   V
++-----------------+ +-----------------+
+| Annotated Video | |  Cropped Target |
+| (full + bbox)   | |  (person only)  |
++-----------------+ +-----------------+
 ```
 
 ---
@@ -79,27 +77,27 @@ Input Video(s)  +  Query (Image / Text / Both)
 
 ## Project Structure
 
-```
+```	ext
 person-reid-clip/
-â”‚
-â”œâ”€â”€ app.py                      # Streamlit web application
-â”œâ”€â”€ reid_main.py                # Core ReID pipeline
-â”œâ”€â”€ clip_inference.py           # CLIP model architecture & inference
-â”‚
-â”œâ”€â”€ clip_training/              # Model training scripts
-â”‚   â”œâ”€â”€ clip_train_image.py     # Image-mode fine-tuning (IRRA)
-â”‚   â””â”€â”€ clip_train_text.py      # Text-mode fine-tuning (IRRA + SDM + MLM)
-â”‚
-â”œâ”€â”€ clip_models/                # [NOT included] Fine-tuned CLIP weights
-â”‚   â”œâ”€â”€ best_model_image.pth    #   â†’ image encoder checkpoint
-â”‚   â””â”€â”€ best_model_text.pth     #   â†’ text encoder checkpoint
-â”‚
-â”œâ”€â”€ models_path/                # [NOT included] YOLO weights
-â”‚   â””â”€â”€ yolo_finetuned_best.pt
-â”‚
-â”œâ”€â”€ requirements.txt
-â”œâ”€â”€ LICENSE
-â””â”€â”€ README.md
+|
++-- app.py                      # Streamlit web application
++-- reid_main.py                # Core ReID pipeline
++-- clip_inference.py           # CLIP model architecture & inference
+|
++-- clip_training/              # Model training scripts
+|   +-- clip_train_image.py     # Image-mode fine-tuning (CLIP-ReID prompt learning)
+|   +-- clip_train_text.py      # Text-mode fine-tuning (IRRA + SDM + MLM)
+|
++-- clip_models/                # [Download from Releases]
+|   +-- best_model_image.pth    #   -> image encoder checkpoint
+|   +-- best_model_text.pth     #   -> text encoder checkpoint
+|
++-- models_path/                # [Download from Releases]
+|   +-- yolo_finetuned_best.pt
+|
++-- requirements.txt
++-- LICENSE
++-- README.md
 ```
 
 > **Model weights are not included in this repository due to file size.**  
