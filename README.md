@@ -40,7 +40,7 @@ Input Video(s)  +  Query (Image / Text / Both)
          │  Per-person crops (track segments)
          ▼
 ┌──────────────────────────────────────────┐
-│         IRRA Fine-tuned CLIP             │
+│                                          │
 │                                          │
 │  Query Image ──► Image Encoder ──► feat  │
 │  Query Text  ──► Text Encoder  ──► feat  │
@@ -80,7 +80,7 @@ Input Video(s)  +  Query (Image / Text / Both)
 ## Project Structure
 
 ```
-clip-person-reid-pipeline/
+person-reid-clip/
 │
 ├── app.py                      # Streamlit web application
 ├── reid_main.py                # Core ReID pipeline
@@ -103,7 +103,7 @@ clip-person-reid-pipeline/
 ```
 
 > **Model weights are not included in this repository due to file size.**  
-> Download all model files from the [**GitHub Releases**](https://github.com/meteroid27/clip-person-reid-pipeline/releases/tag/v1.0) page and place them as shown below:
+> Download all model files from the [**GitHub Releases**](https://github.com/meteroid27/person-reid-clip/releases/tag/v1.0) page and place them as shown below:
 >
 > ```
 > clip_models/
@@ -126,8 +126,8 @@ clip-person-reid-pipeline/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/meteroid27/clip-person-reid-pipeline.git
-cd clip-person-reid-pipeline
+git clone https://github.com/meteroid27/person-reid-clip.git
+cd person-reid-clip
 
 # 2. Install dependencies
 pip install -r requirements.txt
