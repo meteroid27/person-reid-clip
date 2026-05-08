@@ -1,7 +1,5 @@
 # Person-Based Video Segmentation and ReID using CLIP
 
-> **Final Year Project — B.E. Electronics and Computer Engineering**  
-> Tribhuvan University, Institute of Engineering
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange?logo=pytorch)](https://pytorch.org)
