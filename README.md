@@ -17,7 +17,7 @@ This project implements a **multimodal person re-identification (ReID) system** 
 - A **natural language description** (text-based search)
 - **Both combined** (hybrid fusion for maximum robustness)
 
-The system is powered by **CLIP** fine-tuned using the **IRRA** framework (CVPR 2023) on the CUHK-PEDES person description dataset, integrated with **YOLOv8** detection and **DeepSORT** tracking, and deployed as an interactive **Streamlit web application**.
+The system is powered by **CLIP**. The text-query components are fine-tuned using the **IRRA** framework on the **CUHK-PEDES** person description dataset. The image-query components utilize **prompt learning** and are trained on the **Market-1501** dataset. These are integrated with **YOLOv8** detection and **DeepSORT** tracking, and deployed as an interactive **Streamlit web application**.
 
 ---
 
@@ -214,29 +214,14 @@ Key tuning parameters in `reid_main.py`:
 
 ## References
 
-1. **IRRA** — Jiang, Z. & Ye, M. (2023). *Cross-Modal Implicit Relation Reasoning and Aligning for Text-to-Image Person Retrieval.* CVPR 2023.  
-   [[Paper]](https://arxiv.org/abs/2303.12501) | [[Code]](https://github.com/anosorae/IRRA)
+1. **CLIP** � Radford, A. et al. (2021).
+   [[OpenAI CLIP Repository]](https://github.com/openai/CLIP) | [[HuggingFace Models]](https://huggingface.co/models?search=clip)
 
-2. **CLIP** — Radford, A. et al. (2021). *Learning Transferable Visual Models From Natural Language Supervision.* ICML 2021.  
-   [[Paper]](https://arxiv.org/abs/2103.00020) | [[Code]](https://github.com/openai/CLIP)
+2. **CUHK-PEDES Dataset**
+   [[Dataset Repository]](https://github.com/ShuangLI59/Person-Search-with-Natural-Language-Description)
 
-3. **ViT** — Dosovitskiy, A. et al. (2021). *An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale.* ICLR 2021.  
-   [[Paper]](https://arxiv.org/abs/2010.11929)
-
-4. **SDM Loss** — Jiang, Z. & Ye, M. (2023). *Similarity Distribution Matching.* (Introduced in IRRA, CVPR 2023.)  
-   [[Paper]](https://arxiv.org/abs/2303.12501)
-
-5. **YOLOv8** — Jocher, G. et al., Ultralytics (2023).  
-   [[Docs]](https://docs.ultralytics.com) | [[Repo]](https://github.com/ultralytics/ultralytics)
-
-6. **DeepSORT** — Wojke, N., Bewley, A. & Paulus, D. (2017). *Simple Online and Realtime Tracking with a Deep Association Metric.* ICIP 2017.  
-   [[Paper]](https://arxiv.org/abs/1703.07402) | [[Code]](https://github.com/nwojke/deep_sort)
-
-7. **CUHK-PEDES Dataset** — Li, S. et al. (2017). *Person Search with Natural Language Description.* CVPR 2017.  
-   [[Paper]](https://arxiv.org/abs/1702.05729) | [[Dataset]](https://github.com/ShuangLI59/Person-Search-with-Natural-Language-Description)
-
-8. **SORT** — Bewley, A. et al. (2016). *Simple Online and Realtime Tracking.* ICIP 2016.  
-   [[Paper]](https://arxiv.org/abs/1602.00763)
+3. **Market-1501 Dataset**
+   [[Dataset Information]](https://zheng-zhe.com/market1501.html)
 
 ---
 
@@ -251,3 +236,4 @@ Tribhuvan University, Institute of Engineering
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
+
