@@ -1,0 +1,8 @@
+numpy
+opencv-python
+torch
+torchvision
+ultralytics
+deep-sort-realtime
+streamlit
+git+https://github.com/openai/CLIP.git

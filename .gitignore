@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Model weights (too large for GitHub — use Releases or HuggingFace Hub)
+clip_models/
+models_path/
+deep-person-reid/
+
+# Pipeline outputs and temp files
+reid_output/
+tmp_inputs/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Backup files
+reid_main_backup.py
+find_unicode.py
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log
+*.txt
+!requirements.txt
+
+.lightning_studio/
+.streamlit/
