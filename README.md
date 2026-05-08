@@ -51,12 +51,13 @@ This pipeline operates using **Prompt Learning** inspired by the **CLIP-ReID** m
 The text-to-image module incorporates the **Cross-Modal Implicit Relation Reasoning and Aligning (IRRA)** framework. Unlike the image pipeline, it fine-tunes *both* the image and text transformers fully end-to-end to maximize cross-modal alignment.
 
 **Training Process:**
-* **Dataset:** Split strictly by person identity (preventing train-test data leakage).
-* **Hyperparameters:** Trained for 60 epochs with a batch size of 64. Uses a learning rate of `1e-5` and weight decay of `4e-4` with warmup schedules.
+* **Dataset:** Evaluated and trained on **CUHK-PEDES**, split strictly by person identity (preventing train-test data leakage).
+* **Hyperparameters:** Trained for 30 epochs (original IRRA parameter: 60) with an effective batch size of 64 (batch size 32 with 2 gradient accumulation steps). Uses a backbone learning rate of `1e-5`, a new-module learning rate of `1e-4`, weight decay of `4e-4`, and a 5-epoch warmup.
 * **Loss Components:**
-  1. **Similarity Distribution Matching (SDM) Loss:** Replaces standard InfoNCE. It constructs soft identity labels and minimizes the KL-divergence between the predicted and actual label similarity distributions.
-  2. **Masked Language Modeling (MLM):** Masks random text tokens and applies a cross-modal attention module (attending text queries to image patches) to predict the masked vocabulary. This mandates fine-grained, localized alignment between image regions and text descriptions.
-* **Testing / Results:** Evaluated against baseline metrics, pushing baseline InfoNCE Rank-1 tracking parameters from ~48.5% significantly upwards toward the ~70% mark.
+  1. **Similarity Distribution Matching (SDM) Loss:** Replaces standard InfoNCE. It constructs soft identity labels using person IDs and minimizes the KL-divergence between the predicted and actual label similarity distributions (`sigma=0.01`). Correctly handles multiple positives per identity.
+  2. **Masked Language Modeling (MLM):** Masks random text tokens (`15%`) and applies a single cross-modal attention module (attending text queries to image patches) to predict the masked vocabulary. This mandates fine-grained, localized alignment between image regions and text descriptions.
+  3. **ID Loss:** Combined with SDM and MLM equally.
+* **Testing / Results:** Evaluated against baseline metrics, pushing baseline InfoNCE Rank-1 tracking parameters from 48.52% significantly upwards toward the ~68-73% mark, and mAP from 37.86% to ~60-66%.
 
 ---
 
