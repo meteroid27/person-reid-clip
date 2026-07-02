@@ -43,7 +43,7 @@ This pipeline operates using **Prompt Learning** inspired by the **CLIP-ReID** m
 * **Hyperparameters:** Trained for 30 epochs using an Adam optimizer with `CosineAnnealingLR`.
 * **Loss Functions:** Trained utilizing a multi-loss strategy combining **ID Loss (CrossEntropy)**, **Triplet Loss**, and **Image-Text Contrastive (ITC) Loss**. 
 * **Sampling:** Uses a `RandomIdentitySampler` to draw 4 instances per identity per batch ensuring rich triplet mining.
-* **Testing / Results:** Achieved **94.21% Rank-1** accuracy and **87.94% mAP**.
+* **Testing / Results:** Achieved **94.48% Rank-1** accuracy and **87.16% mAP**.
 
 ### B. Text-Only Pipeline (IRRA Framework)
 
@@ -57,7 +57,7 @@ The text-to-image module incorporates the **Cross-Modal Implicit Relation Reason
   1. **Similarity Distribution Matching (SDM) Loss:** Replaces standard InfoNCE. It constructs soft identity labels using person IDs and minimizes the KL-divergence between the predicted and actual label similarity distributions (`sigma=0.01`). Correctly handles multiple positives per identity.
   2. **Masked Language Modeling (MLM):** Masks random text tokens (`15%`) and applies a single cross-modal attention module (attending text queries to image patches) to predict the masked vocabulary. This mandates fine-grained, localized alignment between image regions and text descriptions.
   3. **ID Loss:** Combined with SDM and MLM equally.
-* **Testing / Results:** Evaluated against baseline metrics, pushing baseline InfoNCE Rank-1 tracking parameters from 48.52% significantly upwards toward the ~68-73% mark, and mAP from 37.86% to ~60-66%.
+* **Testing / Results:** Achieved **65.22% Rank-1** and **62.93% mAP** on the identity-level CUHK-PEDES split, compared to a CLIP (ViT-B/16) zero-shot baseline of **23.55% Rank-1** and **21.26% mAP**.
 
 ---
 
