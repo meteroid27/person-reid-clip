@@ -57,7 +57,7 @@ The text-to-image module incorporates the **Cross-Modal Implicit Relation Reason
   1. **Similarity Distribution Matching (SDM) Loss:** Replaces standard InfoNCE. It constructs soft identity labels using person IDs and minimizes the KL-divergence between the predicted and actual label similarity distributions (`sigma=0.01`). Correctly handles multiple positives per identity.
   2. **Masked Language Modeling (MLM):** Masks random text tokens (`15%`) and applies a single cross-modal attention module (attending text queries to image patches) to predict the masked vocabulary. This mandates fine-grained, localized alignment between image regions and text descriptions.
   3. **ID Loss:** Combined with SDM and MLM equally.
-* **Testing / Results:** Achieved **65.22% Rank-1** and **62.93% mAP** on the identity-level CUHK-PEDES split, compared to a CLIP (ViT-B/16) zero-shot baseline of **23.55% Rank-1** and **21.26% mAP**.
+* **Testing / Results:** Achieved **65.22% Rank-1** and **62.93% mAP** on the custom college dataset that we have collected, compared to a CLIP (ViT-B/16) zero-shot baseline of **23.55% Rank-1** and **21.26% mAP**.
 
 ---
 
