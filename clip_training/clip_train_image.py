@@ -4,7 +4,7 @@
 #
 # Model: CLIPReID_Prompt — CLIP ViT-B/16 with learnable prompt tokens
 # Dataset: Market-1501
-# Result: 94.21% Rank-1, 87.94% mAP
+# Result: 94.48% Rank-1, 87.16% mAP
 #
 # Architecture:
 #   - Backbone    : CLIP ViT-B/16 (fine-tuned with low LR)
