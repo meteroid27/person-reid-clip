@@ -21,7 +21,7 @@ The system incorporates **YOLOv8** for human detection and **DeepSORT** for temp
 
 The end-to-end inference and tracking pipeline executes the following sequenced architecture:
 
-1. **Video Input & Detection:** Surveillance video frames are processed frame-by-frame. A custom-trained **YOLOv8** model detects humans, returning bounding box coordinates for each subject.
+1. **Video Input & Detection:** Surveillance video frames are processed frame-by-frame. A custom-trained **YOLOv11n** model detects humans, returning bounding box coordinates for each subject.
 2. **Object Tracking:** The bounding boxes are fed into **DeepSORT**, which assigns and tracks unique IDs across consecutive frames, converting individual detections into continuous "tracklets."
 3. **Feature Extraction:** For each tracked individual, the detected image crop is passed through the fine-tuned dual-stream **CLIP Encoders**. Simultaneously, the user's text or image query is passed through the corresponding encoder to generate feature embeddings in a unified visual-linguistic space.
 4. **Scoring & Matching:** The system calculates the **Cosine Similarity** between the user's query embedding and the tracklet embeddings. 
