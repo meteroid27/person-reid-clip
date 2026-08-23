@@ -47,3 +47,4 @@ Thumbs.db
 
 !clip_models/.gitkeep
 !models_path/.gitkeep
+!models_path/yolo_finetuned_best.pt
