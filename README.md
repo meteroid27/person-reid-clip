@@ -98,9 +98,9 @@ pip install -r requirements.txt
 *Note: For maximum performance, install the GPU-compiled PyTorch directly from [pytorch.org](https://pytorch.org/).*
 
 **3. Download Model Weights:**
-Ensure you download the fine-tuned model `.pth` and `.pt` weights into their respective directories:
-* Place the text and image encoder weights (`best_model_image.pth`, `best_model_text.pth`) inside the `clip_models/` folder.
-* Place the YOLO fine-tuned weights (`yolo_finetuned_best.pt`) inside the `models_path/` folder.
+The fine-tuned CLIP model weights (`best_model_image.pth`, `best_model_text.pth`) are **downloaded automatically** from Hugging Face Hub on first run.
+
+If you are using custom YOLO weights, place your YOLO fine-tuned weights (`yolo_finetuned_best.pt`) inside the `models_path/` folder.
 
 ---
 

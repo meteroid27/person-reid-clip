@@ -6,3 +6,4 @@ ultralytics
 deep-sort-realtime
 streamlit
 git+https://github.com/openai/CLIP.git
+huggingface_hub

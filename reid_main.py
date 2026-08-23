@@ -435,11 +435,20 @@ def run_reid(
     clip_query_mode = (clip_query_mode or "image").lower()
 
     if model_type == "clip":
+        try:
+            from huggingface_hub import hf_hub_download
+            image_ckpt_path = hf_hub_download(repo_id="prasish17/clip-image-query", filename="best_model_image.pth")
+            text_ckpt_path = hf_hub_download(repo_id="prasish17/clip-text-query", filename="best_model_text.pth")
+        except Exception as e:
+            print(f"HuggingFace download failed: {e}. Falling back to local clip_models folder.")
+            image_ckpt_path = os.path.join(_PROJECT_ROOT, "clip_models", "best_model_image.pth")
+            text_ckpt_path = os.path.join(_PROJECT_ROOT, "clip_models", "best_model_text.pth")
+
         from clip_inference import ClipFeatureExtractor
         extractor = ClipFeatureExtractor(
             device=device,
-            image_ckpt_path=os.path.join(_PROJECT_ROOT, "clip_models", "best_model_image.pth"),
-            text_ckpt_path=os.path.join(_PROJECT_ROOT, "clip_models", "best_model_text.pth"),
+            image_ckpt_path=image_ckpt_path,
+            text_ckpt_path=text_ckpt_path,
         )
     else:
         extractor = FeatureExtractor(device)
@@ -831,11 +840,20 @@ def run_reid_multi(
 
     print(f"[Setup] Loading feature extractor ({model_type})...")
     if model_type == "clip":
+        try:
+            from huggingface_hub import hf_hub_download
+            image_ckpt_path = hf_hub_download(repo_id="prasish17/clip-image-query", filename="best_model_image.pth")
+            text_ckpt_path = hf_hub_download(repo_id="prasish17/clip-text-query", filename="best_model_text.pth")
+        except Exception as e:
+            print(f"HuggingFace download failed: {e}. Falling back to local clip_models folder.")
+            image_ckpt_path = os.path.join(_PROJECT_ROOT, "clip_models", "best_model_image.pth")
+            text_ckpt_path = os.path.join(_PROJECT_ROOT, "clip_models", "best_model_text.pth")
+
         from clip_inference import ClipFeatureExtractor
         extractor = ClipFeatureExtractor(
             device=device,
-            image_ckpt_path=os.path.join(_PROJECT_ROOT, "clip_models", "best_model_image.pth"),
-            text_ckpt_path=os.path.join(_PROJECT_ROOT, "clip_models", "best_model_text.pth"),
+            image_ckpt_path=image_ckpt_path,
+            text_ckpt_path=text_ckpt_path,
         )
     else:
         extractor = FeatureExtractor(device)
